@@ -1,7 +1,8 @@
+import { Search } from "lucide-react";
 import { Controls } from "./controls";
+import { NAV_DOCS } from "@/lib/docs";
 
 const REPO = "https://github.com/plyght/saltos";
-const DOCS = `${REPO}/blob/main/docs`;
 
 type Link = { label: string; href: string; ext?: boolean };
 type Portlet = { title: string; links: Link[] };
@@ -10,28 +11,27 @@ const NAV: Portlet[] = [
   {
     title: "Navigation",
     links: [
-      { label: "Main page", href: "#top" },
-      { label: "Overview", href: "#Overview" },
-      { label: "Strata", href: "#Strata" },
-      { label: "Rollback", href: "#Rollback" },
-      { label: "Comparison", href: "#Comparison" },
-      { label: "Release history", href: "#Release_history" },
+      { label: "Main page", href: "/" },
+      { label: "Overview", href: "/#Overview" },
+      { label: "Strata", href: "/#Strata" },
+      { label: "Rollback", href: "/#Rollback" },
+      { label: "Comparison", href: "/#Comparison" },
+      { label: "Release history", href: "/#Release_history" },
+    ],
+  },
+  {
+    title: "Documentation",
+    links: [
+      { label: "All pages", href: "/docs" },
+      ...NAV_DOCS.map((d) => ({ label: d.title, href: `/docs/${d.slug}` })),
     ],
   },
   {
     title: "Get saltOS",
     links: [
       { label: "Download", href: `${REPO}/releases`, ext: true },
-      { label: "Installation", href: `${DOCS}/installation.md`, ext: true },
-      { label: "Reproducibility", href: `${DOCS}/reproducibility.md`, ext: true },
-    ],
-  },
-  {
-    title: "Tools",
-    links: [
       { label: "Source repository", href: REPO, ext: true },
       { label: "Issue tracker", href: `${REPO}/issues`, ext: true },
-      { label: "Contributing", href: `${DOCS}/contributing.md`, ext: true },
     ],
   },
 ];
@@ -58,7 +58,7 @@ export function WikiPanel() {
           aria-label="Search saltOS"
         />
         <button type="submit" aria-label="Search">
-          ⌕
+          <Search size={14} strokeWidth={1.75} aria-hidden="true" />
         </button>
       </form>
 
@@ -97,7 +97,13 @@ function SaltCrystal() {
       fill="none"
       aria-hidden="true"
     >
-      <circle cx="32" cy="32" r="31" fill="var(--box-bg)" stroke="var(--border)" />
+      <circle
+        cx="32"
+        cy="32"
+        r="31"
+        fill="var(--box-bg)"
+        stroke="var(--border)"
+      />
       {/* isometric halite cube */}
       <g
         stroke="var(--text-soft)"

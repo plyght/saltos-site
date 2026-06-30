@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Tabs } from "./tabs";
 
 const REPO = "https://github.com/plyght/saltos";
 const DOCS = `${REPO}/blob/main/docs`;
@@ -14,7 +15,15 @@ function Ext({ href, children }: { href: string; children: ReactNode }) {
 function Edit({ section }: { section: string }) {
   return (
     <span className="mw-editsection">
-      [<a href={`${REPO}/edit/main/docs/${section}.md`} target="_blank" rel="noreferrer">edit</a>]
+      [
+      <a
+        href={`${REPO}/edit/main/docs/${section}.md`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        edit
+      </a>
+      ]
     </span>
   );
 }
@@ -51,43 +60,22 @@ const INFOBOX: { th: string; td: ReactNode }[] = [
 export function Article() {
   return (
     <main className="mw-body" role="main">
-      <div className="tabs-row">
-        <ul className="vector-tabs left">
-          <li className="selected">
-            <a href="#top">Article</a>
-          </li>
-          <li>
-            <a href={`${REPO}/discussions`} target="_blank" rel="noreferrer">
-              Talk
-            </a>
-          </li>
-        </ul>
-        <ul className="vector-tabs">
-          <li className="selected">
-            <a href="#top">Read</a>
-          </li>
-          <li>
-            <a href={`${REPO}`} target="_blank" rel="noreferrer">
-              Edit
-            </a>
-          </li>
-          <li>
-            <a href={`${REPO}/commits/main`} target="_blank" rel="noreferrer">
-              View history
-            </a>
-          </li>
-        </ul>
-      </div>
+      <Tabs active="article" />
 
       <h1 id="firstHeading">saltOS</h1>
-      <p className="tagline">From the saltOS handbook, the independent Linux distribution</p>
+      <p className="tagline">
+        From the saltOS handbook, the independent Linux distribution
+      </p>
 
       <div className="mw-body-content">
         <p className="hatnote">
           This article is about the operating system. For the mineral, see{" "}
           <Ext href="https://en.wikipedia.org/wiki/Halite">Halite</Ext>. For the
           configuration tool, see{" "}
-          <Ext href="https://en.wikipedia.org/wiki/Salt_(software)">Salt (software)</Ext>.
+          <Ext href="https://en.wikipedia.org/wiki/Salt_(software)">
+            Salt (software)
+          </Ext>
+          .
         </p>
 
         {/* infobox */}
@@ -136,17 +124,16 @@ export function Article() {
           with its own boot, base system, init, package manager and rollback
           model. Its name follows the estuary metaphor: where fresh water meets
           the sea you get brackish water, and where a curated native base meets
-          the wider Linux world you get saltOS. It is{" "}
-          <b>not a fork</b> of an existing distribution&mdash;its foundation is
-          built from recipes.
+          the wider Linux world you get saltOS. It is <b>not a fork</b> of an
+          existing distribution&mdash;its foundation is built from recipes.
           <sup className="reference">[1]</sup>
         </p>
         <p>
           saltOS runs software from any major distribution through managed,
           rollbackable environments called <b>strata</b>. Components stay
-          interchangeable and every change to the system is a{" "}
-          <i>transaction</i>, so a machine never silts up into an untraceable
-          pile of state.<sup className="reference">[2]</sup>
+          interchangeable and every change to the system is a <i>transaction</i>
+          , so a machine never silts up into an untraceable pile of state.
+          <sup className="reference">[2]</sup>
         </p>
 
         {/* TOC */}
@@ -175,7 +162,8 @@ export function Article() {
             </li>
             <li>
               <a href="#Comparison">
-                <span className="tocnumber">5</span>Comparison with related systems
+                <span className="tocnumber">5</span>Comparison with related
+                systems
               </a>
             </li>
             <li>
@@ -198,11 +186,11 @@ export function Article() {
         </h2>
         <p>
           saltOS builds its boot path, init, C library and package manager from
-          source, so the foundation is genuinely independent rather than a reskin
-          of another distribution. The root filesystem uses{" "}
+          source, so the foundation is genuinely independent rather than a
+          reskin of another distribution. The root filesystem uses{" "}
           <Ext href="https://en.wikipedia.org/wiki/Btrfs">Btrfs</Ext>, and the
-          system keeps a traditional filesystem layout that reads like any Linux,
-          with no separate configuration language required to operate the
+          system keeps a traditional filesystem layout that reads like any
+          Linux, with no separate configuration language required to operate the
           machine.
         </p>
         <p>
@@ -218,13 +206,13 @@ export function Article() {
           <Edit section="strata" />
         </h2>
         <p>
-          A <b>stratum</b> is a managed root of another distribution, bootstrapped
-          and snapshotted by saltOS. Arch, Debian, Void, Fedora, openSUSE and
-          Alpine are supported. Foreign software is never silently merged into the
-          host&rsquo;s <C>PATH</C>; it is run deliberately, for example{" "}
-          <C>salt run arch firefox</C>, or selected commands are exposed with{" "}
-          <C>salt expose</C>. Each stratum is snapshotted and rolled back on its
-          own.<sup className="reference">[2]</sup>
+          A <b>stratum</b> is a managed root of another distribution,
+          bootstrapped and snapshotted by saltOS. Arch, Debian, Void, Fedora,
+          openSUSE and Alpine are supported. Foreign software is never silently
+          merged into the host&rsquo;s <C>PATH</C>; it is run deliberately, for
+          example <C>salt run arch firefox</C>, or selected commands are exposed
+          with <C>salt expose</C>. Each stratum is snapshotted and rolled back
+          on its own.<sup className="reference">[2]</sup>
         </p>
 
         {/* Rollback */}
@@ -234,12 +222,12 @@ export function Article() {
         </h2>
         <p>
           Every update snapshots the Btrfs root before touching it. A failed
-          transaction rolls back automatically, and <C>salt rollback</C> restores
-          the last known-good deployment. User data under <C>/home</C> is never
-          touched by a rollback. Operations run in the foreground with no
-          background daemon, verify{" "}
-          <Ext href="https://en.wikipedia.org/wiki/EdDSA">ed25519</Ext> signatures
-          before trusting metadata, and pin every source by hash.
+          transaction rolls back automatically, and <C>salt rollback</C>{" "}
+          restores the last known-good deployment. User data under <C>/home</C>{" "}
+          is never touched by a rollback. Operations run in the foreground with
+          no background daemon, verify{" "}
+          <Ext href="https://en.wikipedia.org/wiki/EdDSA">ed25519</Ext>{" "}
+          signatures before trusting metadata, and pin every source by hash.
           <sup className="reference">[3]</sup>
         </p>
 
@@ -259,12 +247,24 @@ export function Article() {
               <th>Effect</th>
             </tr>
             {[
-              ["salt update", "Snapshot the root, apply the transaction, auto-rollback on failure"],
+              [
+                "salt update",
+                "Snapshot the root, apply the transaction, auto-rollback on failure",
+              ],
               ["salt rollback", "Restore the last known-good deployment"],
-              ["salt strata add arch", "Bootstrap an Arch root as a managed, snapshotted stratum"],
-              ["salt run arch firefox", "Run foreign software from a stratum without merging it in"],
+              [
+                "salt strata add arch",
+                "Bootstrap an Arch root as a managed, snapshotted stratum",
+              ],
+              [
+                "salt run arch firefox",
+                "Run foreign software from a stratum without merging it in",
+              ],
               ["salt expose rg", "Expose a chosen command on the host PATH"],
-              ["salt build ./recipe", "Build, sign and publish a native package from a recipe"],
+              [
+                "salt build ./recipe",
+                "Build, sign and publish a native package from a recipe",
+              ],
             ].map(([cmd, desc]) => (
               <tr key={cmd}>
                 <td>
@@ -301,7 +301,9 @@ export function Article() {
             </tr>
             <tr>
               <td>
-                <Ext href="https://en.wikipedia.org/wiki/Bedrock_Linux">Bedrock</Ext>
+                <Ext href="https://en.wikipedia.org/wiki/Bedrock_Linux">
+                  Bedrock
+                </Ext>
               </td>
               <td>Yes</td>
               <td>No (sits on a host)</td>
@@ -346,7 +348,8 @@ export function Article() {
               <td>
                 First experimental milestone: self-hosted from-source ISO for
                 x86_64 and aarch64; transactional host updates with automatic
-                rollback; native package flow; first strata (Arch, Debian, Void).
+                rollback; native package flow; first strata (Arch, Debian,
+                Void).
               </td>
             </tr>
             <tr>
@@ -369,16 +372,20 @@ export function Article() {
         <h2 id="References">References</h2>
         <ol className="references">
           <li id="ref-1">
-            ^ <Ext href={`${DOCS}/architecture.md`}>&ldquo;Architecture&rdquo;</Ext>.
-            saltOS documentation.
+            ^{" "}
+            <Ext href={`${DOCS}/architecture.md`}>
+              &ldquo;Architecture&rdquo;
+            </Ext>
+            . saltOS documentation.
           </li>
           <li id="ref-2">
             ^ <Ext href={`${DOCS}/strata.md`}>&ldquo;Strata&rdquo;</Ext>. saltOS
             documentation.
           </li>
           <li id="ref-3">
-            ^ <Ext href={`${DOCS}/rollback.md`}>&ldquo;Rollback model&rdquo;</Ext>.
-            saltOS documentation.
+            ^{" "}
+            <Ext href={`${DOCS}/rollback.md`}>&ldquo;Rollback model&rdquo;</Ext>
+            . saltOS documentation.
           </li>
         </ol>
       </div>
@@ -388,9 +395,20 @@ export function Article() {
 
 function Crystal() {
   return (
-    <svg width="120" height="120" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <svg
+      width="120"
+      height="120"
+      viewBox="0 0 64 64"
+      fill="none"
+      aria-hidden="true"
+    >
       <rect width="64" height="64" fill="var(--content-bg)" />
-      <g stroke="var(--text-soft)" strokeWidth="1.4" strokeLinejoin="round" fill="none">
+      <g
+        stroke="var(--text-soft)"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+        fill="none"
+      >
         <path d="M32 8 L54 20 L54 44 L32 56 L10 44 L10 20 Z" />
         <path d="M32 8 L32 32 M32 32 L54 20 M32 32 L10 20" />
         <path d="M32 32 L32 56" opacity="0.45" />

@@ -29,8 +29,11 @@ export const viewport: Viewport = {
 const initScript = `
 (function () {
   try {
+    var d = document.documentElement;
     var t = localStorage.getItem("salt-theme") || "light";
-    document.documentElement.setAttribute("data-theme", t);
+    d.setAttribute("data-theme", t);
+    var s = localStorage.getItem("salt-skin") || "vector";
+    d.setAttribute("data-skin", s);
   } catch (e) {}
 })();
 `;
