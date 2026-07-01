@@ -7,7 +7,7 @@ const REPO = "https://github.com/plyght/saltos";
 const SITE_REPO = "https://github.com/plyght/saltos-site";
 
 export const metadata: Metadata = {
-  title: "saltOS: Revision history · the brackish handbook",
+  title: "saltOS: Revision history · the saltOS handbook",
 };
 
 export default function HistoryPage() {

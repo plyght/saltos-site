@@ -64,7 +64,7 @@ export function Article() {
 
       <h1 id="firstHeading">saltOS</h1>
       <p className="tagline">
-        From the saltOS handbook, the independent Linux distribution
+        From the saltOS handbook, the project&rsquo;s reference documentation
       </p>
 
       <div className="mw-body-content">
@@ -90,8 +90,7 @@ export function Article() {
               <td className="infobox-figure" colSpan={2}>
                 <Crystal />
                 <div className="infobox-caption">
-                  Borrowed strata settle over a signed native base; the boundary
-                  is the brackish line.
+                  The saltOS logo, modelled on a salt crystal.
                 </div>
               </td>
             </tr>
@@ -122,17 +121,18 @@ export function Article() {
             Linux distribution
           </Ext>{" "}
           with its own boot, base system, init, package manager and rollback
-          model. Its name follows the estuary metaphor: where fresh water meets
-          the sea you get brackish water, and where a curated native base meets
-          the wider Linux world you get saltOS. It is <b>not a fork</b>{" "}
-          of an existing distribution&mdash;its foundation is built from recipes.
+          model. Its name reflects what sits at its core: a small, curated
+          native base meeting software drawn from across the wider Linux world.
+          It is <b>not a fork</b>{" "}
+          of an existing distribution&mdash;its foundation is built from source
+          recipes.
           <sup className="reference">[1]</sup>
         </p>
         <p>
           saltOS runs software from any major distribution through managed,
           rollbackable environments called <b>strata</b>. Components stay
-          interchangeable and every change to the system is a <i>transaction</i>
-          , so a machine never silts up into an untraceable pile of state.
+          interchangeable and every change to the system is a{" "}
+          <i>transaction</i>, so a machine never accumulates untraceable state.
           <sup className="reference">[2]</sup>
         </p>
 

@@ -3,14 +3,14 @@ import { Agentation } from "agentation";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "saltOS · a brackish operating system",
+  title: "saltOS · an independent Linux distribution",
   description:
     "saltOS is an experimental independent Linux distribution with its own boot, base system, init, package manager and rollback model. Run software from any distribution through managed, rollbackable strata.",
   metadataBase: new URL("https://saltos.dev"),
   openGraph: {
-    title: "saltOS · a brackish operating system",
+    title: "saltOS · an independent Linux distribution",
     description:
-      "Independent Linux that runs software from any distribution, and rolls back every change cleanly.",
+      "Independent Linux that runs software from any distribution and rolls back every change cleanly.",
     type: "website",
   },
   icons: {

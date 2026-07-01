@@ -6,7 +6,7 @@ import { Giscus } from "@/components/giscus";
 const REPO = "https://github.com/plyght/saltos";
 
 export const metadata: Metadata = {
-  title: "Talk:saltOS · the brackish handbook",
+  title: "Talk:saltOS · the saltOS handbook",
 };
 
 export default function Talk() {
