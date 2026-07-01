@@ -124,8 +124,8 @@ export function Article() {
           with its own boot, base system, init, package manager and rollback
           model. Its name follows the estuary metaphor: where fresh water meets
           the sea you get brackish water, and where a curated native base meets
-          the wider Linux world you get saltOS. It is <b>not a fork</b> of an
-          existing distribution&mdash;its foundation is built from recipes.
+          the wider Linux world you get saltOS. It is <b>not a fork</b>{" "}
+          of an existing distribution&mdash;its foundation is built from recipes.
           <sup className="reference">[1]</sup>
         </p>
         <p>
@@ -396,24 +396,38 @@ export function Article() {
 function Crystal() {
   return (
     <svg
-      width="120"
-      height="120"
-      viewBox="0 0 64 64"
-      fill="none"
+      width="200"
+      height="187"
+      viewBox="0 0 342 320"
+      fontFamily="'SFMono-Regular','Menlo',ui-monospace,monospace"
+      fontSize="12px"
+      fill="var(--link, #2f6db0)"
       aria-hidden="true"
     >
-      <rect width="64" height="64" fill="var(--content-bg)" />
-      <g
-        stroke="var(--text-soft)"
-        strokeWidth="1.4"
-        strokeLinejoin="round"
-        fill="none"
-      >
-        <path d="M32 8 L54 20 L54 44 L32 56 L10 44 L10 20 Z" />
-        <path d="M32 8 L32 32 M32 32 L54 20 M32 32 L10 20" />
-        <path d="M32 32 L32 56" opacity="0.45" />
-        <path d="M10 20 L32 32 L54 20" opacity="0.45" />
-      </g>
+      <text x="16" y="25.6" xmlSpace="preserve">                 ::</text>
+      <text x="16" y="37.6" xmlSpace="preserve">            :::::::::::</text>
+      <text x="16" y="49.6" xmlSpace="preserve">        ::::::::::::::::::-</text>
+      <text x="16" y="61.6" xmlSpace="preserve">       ::::::::::--:---:---::::</text>
+      <text x="16" y="73.6" xmlSpace="preserve">       :::::::::-----=-=-----::::::</text>
+      <text x="16" y="85.6" xmlSpace="preserve">      ::::::::::::--==-=-==-------:::::</text>
+      <text x="16" y="97.6" xmlSpace="preserve">     :::::::::::::::::-=======------::::::</text>
+      <text x="16" y="109.6" xmlSpace="preserve">     :::::::-:::::::::::::::::::::::::::::</text>
+      <text x="16" y="121.6" xmlSpace="preserve">    :::-::-----==---:::::::::----:--::::::</text>
+      <text x="16" y="133.6" xmlSpace="preserve">    :::::--========-::-------:----=----:::</text>
+      <text x="16" y="145.6" xmlSpace="preserve">   ::::---=========----=---==-------=--::::</text>
+      <text x="16" y="157.6" xmlSpace="preserve">  ::::---:====+=+==-----=-=========-----:::</text>
+      <text x="16" y="169.6" xmlSpace="preserve">  :::----:-====+==--==================---::</text>
+      <text x="16" y="181.6" xmlSpace="preserve"> :::-----:-==++++=--=-================---::</text>
+      <text x="16" y="193.6" xmlSpace="preserve">-:::---:-::-=+=+==---===============--=-::</text>
+      <text x="16" y="205.6" xmlSpace="preserve"> :::::::::::::-==----================--::</text>
+      <text x="16" y="217.6" xmlSpace="preserve">   ::::::::::::-::-================--:::</text>
+      <text x="16" y="229.6" xmlSpace="preserve">    -::::::-:-----:::-============---::</text>
+      <text x="16" y="241.6" xmlSpace="preserve">      ::::------::::-:::-=======----::-</text>
+      <text x="16" y="253.6" xmlSpace="preserve">       ::-------:::-:::::::-====---::</text>
+      <text x="16" y="265.6" xmlSpace="preserve">         :::---::-::::-:--:::::--:::-</text>
+      <text x="16" y="277.6" xmlSpace="preserve">          ::::-:::::--::--::::::::::</text>
+      <text x="16" y="289.6" xmlSpace="preserve">            -::::::::::::-:-</text>
+      <text x="16" y="301.6" xmlSpace="preserve">             ::::::-</text>
     </svg>
   );
 }

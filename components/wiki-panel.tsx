@@ -93,29 +93,36 @@ function SaltCrystal() {
   return (
     <svg
       className="logo-mark"
-      viewBox="0 0 64 64"
-      fill="none"
+      viewBox="0 0 342 320"
+      fontFamily="'SFMono-Regular','Menlo',ui-monospace,monospace"
+      fontSize="12px"
+      fill="currentColor"
       aria-hidden="true"
     >
-      <circle
-        cx="32"
-        cy="32"
-        r="31"
-        fill="var(--box-bg)"
-        stroke="var(--border)"
-      />
-      {/* isometric halite cube */}
-      <g
-        stroke="var(--text-soft)"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-        fill="none"
-      >
-        <path d="M32 14 L48 23 L48 41 L32 50 L16 41 L16 23 Z" />
-        <path d="M32 14 L32 32 M32 32 L48 23 M32 32 L16 23" />
-        <path d="M32 32 L32 50" opacity="0.5" />
-        <path d="M16 23 L32 32 L48 23" opacity="0.5" />
-      </g>
+      <text x="16" y="25.6" xmlSpace="preserve">                 ::</text>
+      <text x="16" y="37.6" xmlSpace="preserve">            :::::::::::</text>
+      <text x="16" y="49.6" xmlSpace="preserve">        ::::::::::::::::::-</text>
+      <text x="16" y="61.6" xmlSpace="preserve">       ::::::::::--:---:---::::</text>
+      <text x="16" y="73.6" xmlSpace="preserve">       :::::::::-----=-=-----::::::</text>
+      <text x="16" y="85.6" xmlSpace="preserve">      ::::::::::::--==-=-==-------:::::</text>
+      <text x="16" y="97.6" xmlSpace="preserve">     :::::::::::::::::-=======------::::::</text>
+      <text x="16" y="109.6" xmlSpace="preserve">     :::::::-:::::::::::::::::::::::::::::</text>
+      <text x="16" y="121.6" xmlSpace="preserve">    :::-::-----==---:::::::::----:--::::::</text>
+      <text x="16" y="133.6" xmlSpace="preserve">    :::::--========-::-------:----=----:::</text>
+      <text x="16" y="145.6" xmlSpace="preserve">   ::::---=========----=---==-------=--::::</text>
+      <text x="16" y="157.6" xmlSpace="preserve">  ::::---:====+=+==-----=-=========-----:::</text>
+      <text x="16" y="169.6" xmlSpace="preserve">  :::----:-====+==--==================---::</text>
+      <text x="16" y="181.6" xmlSpace="preserve"> :::-----:-==++++=--=-================---::</text>
+      <text x="16" y="193.6" xmlSpace="preserve">-:::---:-::-=+=+==---===============--=-::</text>
+      <text x="16" y="205.6" xmlSpace="preserve"> :::::::::::::-==----================--::</text>
+      <text x="16" y="217.6" xmlSpace="preserve">   ::::::::::::-::-================--:::</text>
+      <text x="16" y="229.6" xmlSpace="preserve">    -::::::-:-----:::-============---::</text>
+      <text x="16" y="241.6" xmlSpace="preserve">      ::::------::::-:::-=======----::-</text>
+      <text x="16" y="253.6" xmlSpace="preserve">       ::-------:::-:::::::-====---::</text>
+      <text x="16" y="265.6" xmlSpace="preserve">         :::---::-::::-:--:::::--:::-</text>
+      <text x="16" y="277.6" xmlSpace="preserve">          ::::-:::::--::--::::::::::</text>
+      <text x="16" y="289.6" xmlSpace="preserve">            -::::::::::::-:-</text>
+      <text x="16" y="301.6" xmlSpace="preserve">             ::::::-</text>
     </svg>
   );
 }

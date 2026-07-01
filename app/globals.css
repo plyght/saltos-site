@@ -135,9 +135,10 @@ p {
 }
 .mw-panel .logo-mark {
   display: block;
-  width: 56px;
-  height: 56px;
+  width: 96px;
+  height: 90px;
   margin: 0 auto 0.4rem;
+  color: var(--link, #2f6db0);
 }
 .mw-panel .logo-word {
   display: block;
