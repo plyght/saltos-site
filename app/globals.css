@@ -322,6 +322,9 @@ p {
 .vector-tabs li.selected a:hover {
   background: var(--content-bg);
 }
+.tab-short {
+  display: none;
+}
 
 /* headings */
 #firstHeading {
@@ -1349,28 +1352,61 @@ code.code {
     font-size: 13px;
   }
 
-  .tabs-row {
+  .tabs-row,
+  :root[data-skin] .tabs-row {
     flex-wrap: nowrap;
-    gap: 0.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-    margin: 0 -1rem 0.9rem;
-    padding: 0 1rem;
-  }
-  .tabs-row::-webkit-scrollbar {
-    display: none;
+    align-items: stretch;
+    gap: 0;
+    margin: 0 -1rem 1rem;
+    padding: 0;
+    border-bottom: 1px solid var(--tab-border);
+    background: var(--tab-bg);
   }
   .vector-tabs {
-    flex: none;
+    flex: 1 1 0;
+    align-items: stretch;
+    gap: 0;
+  }
+  .vector-tabs.left {
+    flex: 0 0 40%;
+    border-right: 1px solid var(--tab-border);
+  }
+  .vector-tabs li {
+    flex: 1 1 0;
+    min-width: 0;
   }
   .vector-tabs li a,
   :root[data-skin] .vector-tabs li a {
     display: flex;
     align-items: center;
+    justify-content: center;
     min-height: 44px;
-    padding: 0.5rem 0.8rem;
-    font-size: 14px;
+    padding: 0 0.25rem;
+    font-size: 13px;
     white-space: nowrap;
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    text-transform: none;
+  }
+  .vector-tabs li a:hover,
+  :root[data-skin] .vector-tabs li a:hover {
+    background: var(--content-bg);
+  }
+  .vector-tabs li.selected a,
+  :root[data-skin] .vector-tabs li.selected a {
+    top: 0;
+    background: var(--content-bg);
+    color: var(--text);
+    font-weight: 600;
+    border-bottom-color: var(--accent);
+  }
+  .tab-long {
+    display: none;
+  }
+  .tab-short {
+    display: inline;
   }
 
   #firstHeading,
