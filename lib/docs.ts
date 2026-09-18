@@ -3,7 +3,7 @@ import { Marked, type Tokens } from "marked";
 export const REPO = "https://github.com/plyght/saltos";
 const RAW_ROOT = "https://raw.githubusercontent.com/plyght/saltos/main/";
 const RAW = `${RAW_ROOT}docs`;
-const BLOB = `${REPO}/blob/main/docs`;
+export const BLOB = `${REPO}/blob/main/docs`;
 
 export type Doc = {
   slug: string;
@@ -101,6 +101,25 @@ function resolveImage(src: string): string {
   return `${RAW_ROOT}${repoPath(src).path}`;
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+const ENTITIES: Record<string, string> = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#39;": "'",
+};
+
+function plainText(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, "")
+    .replace(/&(?:amp|lt|gt|quot|#39);/g, (m) => ENTITIES[m])
+    .trim();
+}
+
 function escapeAttr(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -119,7 +138,9 @@ function slugify(text: string): string {
     .replace(/\s+/g, "-");
 }
 
-function createRenderer() {
+export type TocEntry = { id: string; text: string; depth: number };
+
+function createRenderer(toc: TocEntry[]) {
   const seen = new Map<string, number>();
   const marked = new Marked({
     gfm: true,
@@ -130,7 +151,16 @@ function createRenderer() {
         const n = seen.get(base) ?? 0;
         seen.set(base, n + 1);
         const id = n === 0 ? base : `${base}-${n}`;
+        if (depth === 2 || depth === 3) {
+          toc.push({ id, text: plainText(text), depth });
+        }
         return `<h${depth} id="${escapeAttr(id)}">${text}</h${depth}>\n`;
+      },
+      code({ text, lang }: Tokens.Code) {
+        const language = (lang ?? "").trim().split(/\s+/)[0];
+        const cls = language ? ` class="language-${escapeAttr(language)}"` : "";
+        const label = language ? ` data-lang="${escapeAttr(language)}"` : "";
+        return `<pre${label}><code${cls}>${escapeHtml(text)}\n</code></pre>\n`;
       },
       link({ href, title, tokens }: Tokens.Link) {
         const text = this.parser.parseInline(tokens);
@@ -155,22 +185,31 @@ function createRenderer() {
   return marked;
 }
 
-export type RenderedDoc = { html: string; ok: boolean };
+export type RenderedDoc = {
+  html: string;
+  ok: boolean;
+  toc: TocEntry[];
+  words: number;
+};
 
 export async function renderDoc(doc: Doc): Promise<RenderedDoc> {
   try {
     const res = await fetch(`${RAW}/${doc.file}`, { cache: "force-cache" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const md = await res.text();
-    const html = await createRenderer().parse(md);
+    const toc: TocEntry[] = [];
+    const html = await createRenderer(toc).parse(md);
     // the page already shows the doc title as the first heading, so drop a
     // leading <h1> from the markdown to avoid two stacked titles
     const deduped = html.replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, "");
-    return { html: deduped, ok: true };
+    const words = md.split(/\s+/).filter(Boolean).length;
+    return { html: deduped, ok: true, toc, words };
   } catch {
     return {
       html: `<p>This page could not be loaded from the repository right now. Read it on <a class="ext" target="_blank" rel="noreferrer" href="${BLOB}/${doc.file}">GitHub</a>.</p>`,
       ok: false,
+      toc: [],
+      words: 0,
     };
   }
 }

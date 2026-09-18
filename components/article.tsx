@@ -58,7 +58,7 @@ const INFOBOX: { th: string; td: ReactNode }[] = [
 
 export function Article() {
   return (
-    <main className="mw-body" role="main">
+    <main className="mw-body" role="main" id="content">
       <Tabs active="article" />
 
       <h1 id="firstHeading">saltOS</h1>
@@ -242,95 +242,102 @@ export function Article() {
           The package manager is a single foreground tool, <C>salt</C>. Common
           operations:
         </p>
-        <table className="wikitable">
-          <tbody>
-            <tr>
-              <th>Command</th>
-              <th>Effect</th>
-            </tr>
-            {[
-              ["salt sync", "Refresh the signed repository index"],
-              ["salt install <pkg>", "Install a native package"],
-              [
-                "salt update",
-                "Snapshot the root, apply the transaction, auto-rollback on failure",
-              ],
-              ["salt rollback", "Restore the last known-good deployment"],
-              [
-                "salt stratum add arch",
-                "Bootstrap an Arch root as a managed, snapshotted stratum",
-              ],
-              [
-                "salt run arch firefox",
-                "Run foreign software from a stratum without merging it in",
-              ],
-              ["salt install arch/ripgrep", "Install a package from a stratum"],
-              [
-                "salt expose arch rg",
-                "Expose a chosen stratum command as a host shim",
-              ],
-              ["salt stratum rollback arch", "Roll back a single stratum"],
-              [
-                "salt build recipes/<name>",
-                "Build a native .grain package from a recipe",
-              ],
-              ["salt sign <pkg>", "Sign a package or repository index"],
-            ].map(([cmd, desc]) => (
-              <tr key={cmd}>
-                <td>
-                  <C>{cmd}</C>
-                </td>
-                <td>{desc}</td>
+        <div className="table-scroll">
+          <table className="wikitable">
+            <tbody>
+              <tr>
+                <th>Command</th>
+                <th>Effect</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+              {[
+                ["salt sync", "Refresh the signed repository index"],
+                ["salt install <pkg>", "Install a native package"],
+                [
+                  "salt update",
+                  "Snapshot the root, apply the transaction, auto-rollback on failure",
+                ],
+                ["salt rollback", "Restore the last known-good deployment"],
+                [
+                  "salt stratum add arch",
+                  "Bootstrap an Arch root as a managed, snapshotted stratum",
+                ],
+                [
+                  "salt run arch firefox",
+                  "Run foreign software from a stratum without merging it in",
+                ],
+                [
+                  "salt install arch/ripgrep",
+                  "Install a package from a stratum",
+                ],
+                [
+                  "salt expose arch rg",
+                  "Expose a chosen stratum command as a host shim",
+                ],
+                ["salt stratum rollback arch", "Roll back a single stratum"],
+                [
+                  "salt build recipes/<name>",
+                  "Build a native .grain package from a recipe",
+                ],
+                ["salt sign <pkg>", "Sign a package or repository index"],
+              ].map(([cmd, desc]) => (
+                <tr key={cmd}>
+                  <td>
+                    <C>{cmd}</C>
+                  </td>
+                  <td>{desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Comparison */}
         <h2 id="Comparison" className="h2-row">
           <span>Comparison with related systems</span>
           <Edit path="docs/architecture.md" />
         </h2>
-        <table className="wikitable">
-          <tbody>
-            <tr>
-              <th>System</th>
-              <th>Borrows across distros</th>
-              <th>Own base</th>
-              <th>System rollback</th>
-              <th>Config language</th>
-            </tr>
-            <tr>
-              <td>
-                <b>saltOS</b>
-              </td>
-              <td>Yes (strata)</td>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>No</td>
-            </tr>
-            <tr>
-              <td>
-                <Ext href="https://en.wikipedia.org/wiki/Bedrock_Linux">
-                  Bedrock
-                </Ext>
-              </td>
-              <td>Yes</td>
-              <td>No (sits on a host)</td>
-              <td>No</td>
-              <td>No</td>
-            </tr>
-            <tr>
-              <td>
-                <Ext href="https://en.wikipedia.org/wiki/NixOS">NixOS</Ext>
-              </td>
-              <td>Partial</td>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>Yes (Nix)</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="table-scroll">
+          <table className="wikitable">
+            <tbody>
+              <tr>
+                <th>System</th>
+                <th>Borrows across distros</th>
+                <th>Own base</th>
+                <th>System rollback</th>
+                <th>Config language</th>
+              </tr>
+              <tr>
+                <td>
+                  <b>saltOS</b>
+                </td>
+                <td>Yes (strata)</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>
+                  <Ext href="https://en.wikipedia.org/wiki/Bedrock_Linux">
+                    Bedrock
+                  </Ext>
+                </td>
+                <td>Yes</td>
+                <td>No (sits on a host)</td>
+                <td>No</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>
+                  <Ext href="https://en.wikipedia.org/wiki/NixOS">NixOS</Ext>
+                </td>
+                <td>Partial</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Yes (Nix)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p>
           Like Bedrock, saltOS lets a user borrow packages across distributions;
           unlike Bedrock, it owns its own boot, init and base. Like NixOS, it
@@ -412,7 +419,7 @@ function Crystal() {
       viewBox="0 0 342 320"
       fontFamily="'SFMono-Regular','Menlo',ui-monospace,monospace"
       fontSize="12px"
-      fill="var(--link, #2f6db0)"
+      fill="var(--accent, #0f7c86)"
       aria-hidden="true"
     >
       <CrystalRows />

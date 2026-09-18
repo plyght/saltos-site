@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function DocsIndex() {
   return (
     <div id="top" className="wiki">
-      <WikiPanel />
-      <main className="mw-body" role="main">
+      <WikiPanel current="/docs" />
+      <main className="mw-body" role="main" id="content">
         <h1 id="firstHeading">Documentation</h1>
         <p className="tagline">
           The saltOS handbook, mirrored from the project repository
