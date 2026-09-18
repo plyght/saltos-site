@@ -192,11 +192,113 @@ export type RenderedDoc = {
   words: number;
 };
 
+async function fetchDoc(doc: Doc): Promise<string> {
+  const res = await fetch(`${RAW}/${doc.file}`, { cache: "force-cache" });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.text();
+}
+
+export type SearchHit = {
+  doc: Doc;
+  score: number;
+  snippet: string;
+  words: number;
+};
+
+export type SearchResult = { hits: SearchHit[]; failed: number };
+
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]*)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+    .replace(/^\s{0,3}[-*>]\s+/gm, "")
+    .replace(/[*_~|]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function searchTerms(query: string): string[] {
+  return Array.from(
+    new Set(
+      query
+        .toLowerCase()
+        .split(/[^\p{L}\p{N}.\-/]+/u)
+        .filter((t) => t.length > 1),
+    ),
+  );
+}
+
+function snippetFor(text: string, terms: string[]): string {
+  const lower = text.toLowerCase();
+  let at = -1;
+  for (const t of terms) {
+    const i = lower.indexOf(t);
+    if (i !== -1 && (at === -1 || i < at)) at = i;
+  }
+  if (at === -1) return text.slice(0, 220).trim();
+  const start = Math.max(0, at - 90);
+  const end = Math.min(text.length, at + 200);
+  const raw = text.slice(start, end);
+  const trimmed = start > 0 ? raw.replace(/^\S*\s/, "") : raw;
+  return `${start > 0 ? "…" : ""}${trimmed}${end < text.length ? "…" : ""}`;
+}
+
+export async function searchDocs(query: string): Promise<SearchResult> {
+  const terms = searchTerms(query);
+  if (terms.length === 0) return { hits: [], failed: 0 };
+  let failed = 0;
+  const hits: SearchHit[] = [];
+  await Promise.all(
+    DOCS.map(async (doc) => {
+      let md: string;
+      try {
+        md = await fetchDoc(doc);
+      } catch {
+        failed += 1;
+        return;
+      }
+      const text = stripMarkdown(md);
+      const body = text.toLowerCase();
+      const title = doc.title.toLowerCase();
+      const headings = md
+        .split("\n")
+        .filter((l) => /^\s{0,3}#{1,6}\s/.test(l))
+        .join(" ")
+        .toLowerCase();
+      let score = 0;
+      for (const t of terms) {
+        if (title.includes(t)) score += 40;
+        if (doc.slug.includes(t)) score += 20;
+        if (headings.includes(t)) score += 10;
+        let i = body.indexOf(t);
+        let n = 0;
+        while (i !== -1 && n < 50) {
+          n += 1;
+          i = body.indexOf(t, i + t.length);
+        }
+        score += Math.min(n, 50);
+      }
+      if (score === 0) return;
+      hits.push({
+        doc,
+        score,
+        snippet: snippetFor(text, terms),
+        words: md.split(/\s+/).filter(Boolean).length,
+      });
+    }),
+  );
+  hits.sort(
+    (a, b) => b.score - a.score || a.doc.title.localeCompare(b.doc.title),
+  );
+  return { hits, failed };
+}
+
 export async function renderDoc(doc: Doc): Promise<RenderedDoc> {
   try {
-    const res = await fetch(`${RAW}/${doc.file}`, { cache: "force-cache" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const md = await res.text();
+    const md = await fetchDoc(doc);
     const toc: TocEntry[] = [];
     const html = await createRenderer(toc).parse(md);
     // the page already shows the doc title as the first heading, so drop a

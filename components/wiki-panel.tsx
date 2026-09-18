@@ -54,7 +54,7 @@ export function WikiPanel({ current }: { current?: string }) {
         <form
           className="wiki-search"
           role="search"
-          action={`${REPO}/search`}
+          action="/search"
           method="get"
         >
           <input
