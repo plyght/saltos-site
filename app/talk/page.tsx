@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { WikiPanel } from "@/components/wiki-panel";
+import { SiteFoot } from "@/components/site-foot";
 import { Tabs } from "@/components/tabs";
 import { Giscus } from "@/components/giscus";
 
@@ -13,7 +15,7 @@ export default function Talk() {
   return (
     <div id="top" className="wiki">
       <WikiPanel />
-      <main className="mw-body" role="main">
+      <main className="mw-body" role="main" id="content">
         <Tabs active="talk" />
 
         <h1 id="firstHeading">Talk:saltOS</h1>
@@ -25,8 +27,8 @@ export default function Talk() {
         <div className="mw-body-content">
           <p className="hatnote">
             This is the talk page for discussing improvements to the{" "}
-            <a href="/">saltOS</a>&nbsp;article. Sign in with GitHub to leave a
-            comment; threads are stored in the project&rsquo;s{" "}
+            <Link href="/">saltOS</Link>&nbsp;article. Sign in with GitHub to
+            leave a comment; threads are stored in the project&rsquo;s{" "}
             <a
               href={`${REPO}/discussions`}
               target="_blank"
@@ -42,18 +44,7 @@ export default function Talk() {
         </div>
       </main>
 
-      <footer className="site-foot">
-        <p>
-          This page documents <b>saltOS</b>, an independent Linux distribution.
-          Text is maintained in the project handbook and licensed under MIT.
-        </p>
-        <p style={{ marginTop: "0.5rem" }}>
-          saltOS 0.1.0 · ©&nbsp;2026 the saltOS project ·{" "}
-          <a href={REPO} target="_blank" rel="noreferrer" className="ext">
-            Source
-          </a>
-        </p>
-      </footer>
+      <SiteFoot />
     </div>
   );
 }

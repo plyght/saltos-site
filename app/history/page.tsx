@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { WikiPanel } from "@/components/wiki-panel";
+import { SiteFoot } from "@/components/site-foot";
 import { Tabs } from "@/components/tabs";
 import { History } from "@/components/history";
 
-const REPO = "https://github.com/plyght/saltos";
 const SITE_REPO = "https://github.com/plyght/saltos-site";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function HistoryPage() {
   return (
     <div id="top" className="wiki">
       <WikiPanel />
-      <main className="mw-body" role="main">
+      <main className="mw-body" role="main" id="content">
         <Tabs active="article" view="history" />
 
         <h1 id="firstHeading">Revision history of &ldquo;saltOS&rdquo;</h1>
@@ -45,18 +45,7 @@ export default function HistoryPage() {
         </div>
       </main>
 
-      <footer className="site-foot">
-        <p>
-          This page documents <b>saltOS</b>, an independent Linux distribution.
-          Text is maintained in the project handbook and licensed under MIT.
-        </p>
-        <p style={{ marginTop: "0.5rem" }}>
-          saltOS 0.1.0 · ©&nbsp;2026 the saltOS project ·{" "}
-          <a href={REPO} target="_blank" rel="noreferrer" className="ext">
-            Source
-          </a>
-        </p>
-      </footer>
+      <SiteFoot />
     </div>
   );
 }

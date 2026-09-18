@@ -19,9 +19,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0d0d0f" },
-    { media: "(prefers-color-scheme: light)", color: "#f5f5f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#101418" },
+    { media: "(prefers-color-scheme: light)", color: "#f8f9fa" },
   ],
 };
 
@@ -47,6 +50,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: initScript }} />
       </head>
       <body>
+        <a href="#content" className="skip-link">
+          Skip to content
+        </a>
         {children}
         {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
