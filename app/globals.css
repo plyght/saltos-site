@@ -173,7 +173,10 @@ p {
   align-self: start;
   max-height: 100vh;
   overflow-y: auto;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+.mw-panel-col::-webkit-scrollbar {
+  display: none;
 }
 .mw-panel {
   padding: 0.8rem 0.6rem 2rem;
@@ -195,10 +198,6 @@ p {
   height: 90px;
   margin: 0 auto 0.4rem;
   color: var(--accent);
-  transition: transform 300ms ease;
-}
-.mw-panel .logo:hover .logo-mark {
-  transform: rotate(-3deg) scale(1.03);
 }
 .mw-panel .logo-word {
   display: block;
