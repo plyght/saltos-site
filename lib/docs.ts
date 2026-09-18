@@ -1,7 +1,8 @@
-import { marked } from "marked";
+import { Marked, type Tokens } from "marked";
 
 export const REPO = "https://github.com/plyght/saltos";
-const RAW = "https://raw.githubusercontent.com/plyght/saltos/main/docs";
+const RAW_ROOT = "https://raw.githubusercontent.com/plyght/saltos/main/";
+const RAW = `${RAW_ROOT}docs`;
 const BLOB = `${REPO}/blob/main/docs`;
 
 export type Doc = {
@@ -51,6 +52,7 @@ export const DOCS: Doc[] = [
     file: "headless-vm-ssh.md",
   },
   { slug: "raspberry-pi", title: "Raspberry Pi", file: "raspberry-pi.md" },
+  { slug: "thinkpad", title: "ThinkPad P40 Yoga", file: "thinkpad.md" },
   { slug: "void-base", title: "Void base", file: "void-base.md" },
   { slug: "conventions", title: "Conventions", file: "CONVENTIONS.md" },
   {
@@ -71,22 +73,86 @@ export function getDoc(slug: string): Doc | undefined {
   return DOCS.find((d) => d.slug === slug);
 }
 
+const ABSOLUTE = /^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i;
+
+function repoPath(href: string): { path: string; hash: string } {
+  const url = new URL(href, `${RAW}/`);
+  const path = url.pathname.startsWith("/plyght/saltos/main/")
+    ? url.pathname.slice("/plyght/saltos/main/".length)
+    : url.pathname.replace(/^\/+/, "");
+  return { path, hash: url.hash };
+}
+
 // turn intra-repo markdown links into in-site routes, and point everything
 // else that's relative back at the GitHub repo
-function rewriteLinks(html: string): string {
-  return html
-    .replace(
-      /href="(?:\.\/)?([\w.-]+)\.md(#[\w-]+)?"/gi,
-      (_m, base: string, hash = "") => {
-        const slug = BY_FILE_BASE.get(base.toLowerCase());
-        return slug
-          ? `href="/docs/${slug}${hash}"`
-          : `href="${BLOB}/${base}.md${hash}"`;
+function resolveLink(href: string): { href: string; external: boolean } {
+  if (ABSOLUTE.test(href)) {
+    return { href, external: /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(href) };
+  }
+  const { path, hash } = repoPath(href);
+  const m = /^docs\/([\w.-]+)\.md$/i.exec(path);
+  const slug = m ? BY_FILE_BASE.get(m[1].toLowerCase()) : undefined;
+  if (slug) return { href: `/docs/${slug}${hash}`, external: false };
+  return { href: `${REPO}/blob/main/${path}${hash}`, external: true };
+}
+
+function resolveImage(src: string): string {
+  if (ABSOLUTE.test(src)) return src;
+  return `${RAW_ROOT}${repoPath(src).path}`;
+}
+
+function escapeAttr(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/<[^>]+>/g, "")
+    .replace(/&[a-z#0-9]+;/g, "")
+    .replace(/[^\p{L}\p{N}\s_-]/gu, "")
+    .replace(/\s+/g, "-");
+}
+
+function createRenderer() {
+  const seen = new Map<string, number>();
+  const marked = new Marked({
+    gfm: true,
+    renderer: {
+      heading({ tokens, depth }: Tokens.Heading) {
+        const text = this.parser.parseInline(tokens);
+        const base = slugify(text) || "section";
+        const n = seen.get(base) ?? 0;
+        seen.set(base, n + 1);
+        const id = n === 0 ? base : `${base}-${n}`;
+        return `<h${depth} id="${escapeAttr(id)}">${text}</h${depth}>\n`;
       },
-    )
-    .replace(/src="(?!https?:|\/)([^"]+)"/gi, (_m, path: string) => {
-      return `src="${RAW}/${path.replace(/^\.\//, "")}"`;
-    });
+      link({ href, title, tokens }: Tokens.Link) {
+        const text = this.parser.parseInline(tokens);
+        const target = resolveLink(href);
+        const attrs = [`href="${escapeAttr(target.href)}"`];
+        if (title) attrs.push(`title="${escapeAttr(title)}"`);
+        if (target.external) {
+          attrs.push(`class="ext"`, `target="_blank"`, `rel="noreferrer"`);
+        }
+        return `<a ${attrs.join(" ")}>${text}</a>`;
+      },
+      image({ href, title, text }: Tokens.Image) {
+        const attrs = [
+          `src="${escapeAttr(resolveImage(href))}"`,
+          `alt="${escapeAttr(text)}"`,
+        ];
+        if (title) attrs.push(`title="${escapeAttr(title)}"`);
+        return `<img ${attrs.join(" ")}>`;
+      },
+    },
+  });
+  return marked;
 }
 
 export type RenderedDoc = { html: string; ok: boolean };
@@ -96,11 +162,11 @@ export async function renderDoc(doc: Doc): Promise<RenderedDoc> {
     const res = await fetch(`${RAW}/${doc.file}`, { cache: "force-cache" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const md = await res.text();
-    const html = await marked.parse(md, { gfm: true });
+    const html = await createRenderer().parse(md);
     // the page already shows the doc title as the first heading, so drop a
     // leading <h1> from the markdown to avoid two stacked titles
     const deduped = html.replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, "");
-    return { html: rewriteLinks(deduped), ok: true };
+    return { html: deduped, ok: true };
   } catch {
     return {
       html: `<p>This page could not be loaded from the repository right now. Read it on <a class="ext" target="_blank" rel="noreferrer" href="${BLOB}/${doc.file}">GitHub</a>.</p>`,

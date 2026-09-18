@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -30,6 +30,8 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "agentation": "^3.0.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.9",
     "prettier": "^3.4.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0"

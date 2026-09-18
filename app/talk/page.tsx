@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { WikiPanel } from "@/components/wiki-panel";
 import { Tabs } from "@/components/tabs";
 import { Giscus } from "@/components/giscus";
@@ -25,8 +26,8 @@ export default function Talk() {
         <div className="mw-body-content">
           <p className="hatnote">
             This is the talk page for discussing improvements to the{" "}
-            <a href="/">saltOS</a>&nbsp;article. Sign in with GitHub to leave a
-            comment; threads are stored in the project&rsquo;s{" "}
+            <Link href="/">saltOS</Link>&nbsp;article. Sign in with GitHub to
+            leave a comment; threads are stored in the project&rsquo;s{" "}
             <a
               href={`${REPO}/discussions`}
               target="_blank"

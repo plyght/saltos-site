@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Tabs } from "./tabs";
+import { CrystalRows } from "./crystal";
 
 const REPO = "https://github.com/plyght/saltos";
 const DOCS = `${REPO}/blob/main/docs`;
@@ -12,15 +13,11 @@ function Ext({ href, children }: { href: string; children: ReactNode }) {
   );
 }
 
-function Edit({ section }: { section: string }) {
+function Edit({ path }: { path: string }) {
   return (
     <span className="mw-editsection">
       [
-      <a
-        href={`${REPO}/edit/main/docs/${section}.md`}
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href={`${REPO}/edit/main/${path}`} target="_blank" rel="noreferrer">
         edit
       </a>
       ]
@@ -34,7 +31,7 @@ function C({ children }: { children: ReactNode }) {
 
 const INFOBOX: { th: string; td: ReactNode }[] = [
   { th: "Developer", td: "The saltOS project" },
-  { th: "Written in", td: "Rust, shell, recipes" },
+  { th: "Written in", td: "C, C++23, shell, recipes" },
   { th: "OS family", td: "Linux (Unix-like)" },
   { th: "Working state", td: "Experimental" },
   { th: "Source model", td: "Open source" },
@@ -50,6 +47,8 @@ const INFOBOX: { th: string; td: ReactNode }[] = [
     ),
   },
   { th: "Package manager", td: <C>salt</C> },
+  { th: "Package format", td: <C>.grain</C> },
+  { th: "Init system", td: <C>runit</C> },
   { th: "Platforms", td: "x86_64, aarch64" },
   { th: "Kernel type", td: "Monolithic (Linux)" },
   { th: "Userland", td: "Native base + foreign strata" },
@@ -123,16 +122,15 @@ export function Article() {
           with its own boot, base system, init, package manager and rollback
           model. Its name reflects what sits at its core: a small, curated
           native base meeting software drawn from across the wider Linux world.
-          It is <b>not a fork</b>{" "}
-          of an existing distribution&mdash;its foundation is built from source
-          recipes.
+          It is <b>not a fork</b> of an existing distribution—its foundation is
+          built from source recipes.
           <sup className="reference">[1]</sup>
         </p>
         <p>
           saltOS runs software from any major distribution through managed,
           rollbackable environments called <b>strata</b>. Components stay
-          interchangeable and every change to the system is a{" "}
-          <i>transaction</i>, so a machine never accumulates untraceable state.
+          interchangeable and every change to the system is a <i>transaction</i>
+          , so a machine never accumulates untraceable state.
           <sup className="reference">[2]</sup>
         </p>
 
@@ -182,12 +180,16 @@ export function Article() {
         {/* Overview */}
         <h2 id="Overview" className="h2-row">
           <span>Overview</span>
-          <Edit section="architecture" />
+          <Edit path="docs/architecture.md" />
         </h2>
         <p>
           saltOS builds its boot path, init, C library and package manager from
           source, so the foundation is genuinely independent rather than a
-          reskin of another distribution. The root filesystem uses{" "}
+          reskin of another distribution. The host runs an upstream Linux kernel
+          on <Ext href="https://en.wikipedia.org/wiki/Glibc">glibc</Ext> with{" "}
+          <Ext href="https://en.wikipedia.org/wiki/Runit">runit</Ext> as init
+          and <Ext href="https://en.wikipedia.org/wiki/GNU_GRUB">GRUB</Ext> as
+          bootloader. The root filesystem uses{" "}
           <Ext href="https://en.wikipedia.org/wiki/Btrfs">Btrfs</Ext>, and the
           system keeps a traditional filesystem layout that reads like any
           Linux, with no separate configuration language required to operate the
@@ -203,13 +205,13 @@ export function Article() {
         {/* Strata */}
         <h2 id="Strata" className="h2-row">
           <span>Strata</span>
-          <Edit section="strata" />
+          <Edit path="docs/strata.md" />
         </h2>
         <p>
           A <b>stratum</b> is a managed root of another distribution,
           bootstrapped and snapshotted by saltOS. Arch, Debian, Void, Fedora,
           openSUSE and Alpine are supported. Foreign software is never silently
-          merged into the host&rsquo;s <C>PATH</C>; it is run deliberately, for
+          merged into the host’s <C>PATH</C>; it is run deliberately, for
           example <C>salt run arch firefox</C>, or selected commands are exposed
           with <C>salt expose</C>. Each stratum is snapshotted and rolled back
           on its own.<sup className="reference">[2]</sup>
@@ -218,7 +220,7 @@ export function Article() {
         {/* Rollback */}
         <h2 id="Rollback" className="h2-row">
           <span>Rollback</span>
-          <Edit section="rollback" />
+          <Edit path="docs/rollback.md" />
         </h2>
         <p>
           Every update snapshots the Btrfs root before touching it. A failed
@@ -234,7 +236,7 @@ export function Article() {
         {/* Package manager */}
         <h2 id="Package_manager" className="h2-row">
           <span>Package manager</span>
-          <Edit section="package-manager" />
+          <Edit path="docs/package-manager.md" />
         </h2>
         <p>
           The package manager is a single foreground tool, <C>salt</C>. Common
@@ -247,24 +249,32 @@ export function Article() {
               <th>Effect</th>
             </tr>
             {[
+              ["salt sync", "Refresh the signed repository index"],
+              ["salt install <pkg>", "Install a native package"],
               [
                 "salt update",
                 "Snapshot the root, apply the transaction, auto-rollback on failure",
               ],
               ["salt rollback", "Restore the last known-good deployment"],
               [
-                "salt strata add arch",
+                "salt stratum add arch",
                 "Bootstrap an Arch root as a managed, snapshotted stratum",
               ],
               [
                 "salt run arch firefox",
                 "Run foreign software from a stratum without merging it in",
               ],
-              ["salt expose rg", "Expose a chosen command on the host PATH"],
+              ["salt install arch/ripgrep", "Install a package from a stratum"],
               [
-                "salt build ./recipe",
-                "Build, sign and publish a native package from a recipe",
+                "salt expose arch rg",
+                "Expose a chosen stratum command as a host shim",
               ],
+              ["salt stratum rollback arch", "Roll back a single stratum"],
+              [
+                "salt build recipes/<name>",
+                "Build a native .grain package from a recipe",
+              ],
+              ["salt sign <pkg>", "Sign a package or repository index"],
             ].map(([cmd, desc]) => (
               <tr key={cmd}>
                 <td>
@@ -279,7 +289,7 @@ export function Article() {
         {/* Comparison */}
         <h2 id="Comparison" className="h2-row">
           <span>Comparison with related systems</span>
-          <Edit section="architecture" />
+          <Edit path="docs/architecture.md" />
         </h2>
         <table className="wikitable">
           <tbody>
@@ -331,7 +341,7 @@ export function Article() {
         {/* Release history */}
         <h2 id="Release_history" className="h2-row">
           <span>Release history</span>
-          <Edit section="changelog" />
+          <Edit path="README.txt" />
         </h2>
         <table className="wikitable">
           <tbody>
@@ -348,8 +358,9 @@ export function Article() {
               <td>
                 First experimental milestone: self-hosted from-source ISO for
                 x86_64 and aarch64; transactional host updates with automatic
-                rollback; native package flow; first strata (Arch, Debian,
-                Void).
+                rollback; native package flow (build, lint, sign, publish, sync,
+                install, verify, remove, rollback); strata across apk, xbps,
+                pacman, apt, dnf and zypper; QEMU-booted live ISO smoke tests.
               </td>
             </tr>
             <tr>
@@ -364,8 +375,8 @@ export function Article() {
           </tbody>
         </table>
         <p style={{ fontSize: "12.5px", color: "var(--text-soft)" }}>
-          saltOS is under active construction and is not yet a daily-driver
-          operating system.
+          saltOS is under active construction. The model is proven in CI, but it
+          is not yet a polished daily-driver operating system.
         </p>
 
         {/* References */}
@@ -404,30 +415,7 @@ function Crystal() {
       fill="var(--link, #2f6db0)"
       aria-hidden="true"
     >
-      <text x="16" y="25.6" xmlSpace="preserve">                 ::</text>
-      <text x="16" y="37.6" xmlSpace="preserve">            :::::::::::</text>
-      <text x="16" y="49.6" xmlSpace="preserve">        ::::::::::::::::::-</text>
-      <text x="16" y="61.6" xmlSpace="preserve">       ::::::::::--:---:---::::</text>
-      <text x="16" y="73.6" xmlSpace="preserve">       :::::::::-----=-=-----::::::</text>
-      <text x="16" y="85.6" xmlSpace="preserve">      ::::::::::::--==-=-==-------:::::</text>
-      <text x="16" y="97.6" xmlSpace="preserve">     :::::::::::::::::-=======------::::::</text>
-      <text x="16" y="109.6" xmlSpace="preserve">     :::::::-:::::::::::::::::::::::::::::</text>
-      <text x="16" y="121.6" xmlSpace="preserve">    :::-::-----==---:::::::::----:--::::::</text>
-      <text x="16" y="133.6" xmlSpace="preserve">    :::::--========-::-------:----=----:::</text>
-      <text x="16" y="145.6" xmlSpace="preserve">   ::::---=========----=---==-------=--::::</text>
-      <text x="16" y="157.6" xmlSpace="preserve">  ::::---:====+=+==-----=-=========-----:::</text>
-      <text x="16" y="169.6" xmlSpace="preserve">  :::----:-====+==--==================---::</text>
-      <text x="16" y="181.6" xmlSpace="preserve"> :::-----:-==++++=--=-================---::</text>
-      <text x="16" y="193.6" xmlSpace="preserve">-:::---:-::-=+=+==---===============--=-::</text>
-      <text x="16" y="205.6" xmlSpace="preserve"> :::::::::::::-==----================--::</text>
-      <text x="16" y="217.6" xmlSpace="preserve">   ::::::::::::-::-================--:::</text>
-      <text x="16" y="229.6" xmlSpace="preserve">    -::::::-:-----:::-============---::</text>
-      <text x="16" y="241.6" xmlSpace="preserve">      ::::------::::-:::-=======----::-</text>
-      <text x="16" y="253.6" xmlSpace="preserve">       ::-------:::-:::::::-====---::</text>
-      <text x="16" y="265.6" xmlSpace="preserve">         :::---::-::::-:--:::::--:::-</text>
-      <text x="16" y="277.6" xmlSpace="preserve">          ::::-:::::--::--::::::::::</text>
-      <text x="16" y="289.6" xmlSpace="preserve">            -::::::::::::-:-</text>
-      <text x="16" y="301.6" xmlSpace="preserve">             ::::::-</text>
+      <CrystalRows />
     </svg>
   );
 }

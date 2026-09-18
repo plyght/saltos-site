@@ -1,5 +1,6 @@
 import { Search } from "lucide-react";
 import { Controls } from "./controls";
+import { CrystalRows } from "./crystal";
 import { NAV_DOCS } from "@/lib/docs";
 
 const REPO = "https://github.com/plyght/saltos";
@@ -99,30 +100,7 @@ function SaltCrystal() {
       fill="currentColor"
       aria-hidden="true"
     >
-      <text x="16" y="25.6" xmlSpace="preserve">                 ::</text>
-      <text x="16" y="37.6" xmlSpace="preserve">            :::::::::::</text>
-      <text x="16" y="49.6" xmlSpace="preserve">        ::::::::::::::::::-</text>
-      <text x="16" y="61.6" xmlSpace="preserve">       ::::::::::--:---:---::::</text>
-      <text x="16" y="73.6" xmlSpace="preserve">       :::::::::-----=-=-----::::::</text>
-      <text x="16" y="85.6" xmlSpace="preserve">      ::::::::::::--==-=-==-------:::::</text>
-      <text x="16" y="97.6" xmlSpace="preserve">     :::::::::::::::::-=======------::::::</text>
-      <text x="16" y="109.6" xmlSpace="preserve">     :::::::-:::::::::::::::::::::::::::::</text>
-      <text x="16" y="121.6" xmlSpace="preserve">    :::-::-----==---:::::::::----:--::::::</text>
-      <text x="16" y="133.6" xmlSpace="preserve">    :::::--========-::-------:----=----:::</text>
-      <text x="16" y="145.6" xmlSpace="preserve">   ::::---=========----=---==-------=--::::</text>
-      <text x="16" y="157.6" xmlSpace="preserve">  ::::---:====+=+==-----=-=========-----:::</text>
-      <text x="16" y="169.6" xmlSpace="preserve">  :::----:-====+==--==================---::</text>
-      <text x="16" y="181.6" xmlSpace="preserve"> :::-----:-==++++=--=-================---::</text>
-      <text x="16" y="193.6" xmlSpace="preserve">-:::---:-::-=+=+==---===============--=-::</text>
-      <text x="16" y="205.6" xmlSpace="preserve"> :::::::::::::-==----================--::</text>
-      <text x="16" y="217.6" xmlSpace="preserve">   ::::::::::::-::-================--:::</text>
-      <text x="16" y="229.6" xmlSpace="preserve">    -::::::-:-----:::-============---::</text>
-      <text x="16" y="241.6" xmlSpace="preserve">      ::::------::::-:::-=======----::-</text>
-      <text x="16" y="253.6" xmlSpace="preserve">       ::-------:::-:::::::-====---::</text>
-      <text x="16" y="265.6" xmlSpace="preserve">         :::---::-::::-:--:::::--:::-</text>
-      <text x="16" y="277.6" xmlSpace="preserve">          ::::-:::::--::--::::::::::</text>
-      <text x="16" y="289.6" xmlSpace="preserve">            -::::::::::::-:-</text>
-      <text x="16" y="301.6" xmlSpace="preserve">             ::::::-</text>
+      <CrystalRows />
     </svg>
   );
 }

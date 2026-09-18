@@ -1,9 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 type Theme = "dark" | "light";
 type Skin = "vector" | "monobook" | "timeless";
+
+function subscribeRoot(onChange: () => void) {
+  const obs = new MutationObserver(onChange);
+  obs.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-skin"],
+  });
+  return () => obs.disconnect();
+}
+
+function readTheme(): Theme {
+  return document.documentElement.getAttribute("data-theme") === "dark"
+    ? "dark"
+    : "light";
+}
+
+function readSkin(): Skin {
+  const s = document.documentElement.getAttribute("data-skin");
+  return s === "monobook" || s === "timeless" ? s : "vector";
+}
 
 const SKINS: { key: Skin; label: string }[] = [
   { key: "vector", label: "Vector 2010" },
@@ -12,20 +32,12 @@ const SKINS: { key: Skin; label: string }[] = [
 ];
 
 export function Controls() {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [skin, setSkin] = useState<Skin>("vector");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    setTheme((root.getAttribute("data-theme") as Theme) ?? "light");
-    setSkin((root.getAttribute("data-skin") as Skin) ?? "vector");
-    setMounted(true);
-  }, []);
+  const theme = useSyncExternalStore(subscribeRoot, readTheme, () => null);
+  const skin = useSyncExternalStore(subscribeRoot, readSkin, () => null);
+  const mounted = theme !== null;
 
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
     try {
       localStorage.setItem("salt-theme", next);
@@ -33,7 +45,6 @@ export function Controls() {
   }
 
   function pickSkin(next: Skin) {
-    setSkin(next);
     document.documentElement.setAttribute("data-skin", next);
     try {
       localStorage.setItem("salt-skin", next);
