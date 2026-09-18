@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 type Theme = "dark" | "light";
 type Skin = "vector" | "monobook" | "timeless";
@@ -35,6 +35,19 @@ export function Controls() {
   const theme = useSyncExternalStore(subscribeRoot, readTheme, () => null);
   const skin = useSyncExternalStore(subscribeRoot, readSkin, () => null);
   const mounted = theme !== null;
+
+  useEffect(() => {
+    if (!mounted) return;
+    const bg = getComputedStyle(document.documentElement)
+      .getPropertyValue("--page-bg")
+      .trim();
+    if (!bg) return;
+    document
+      .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((m) => {
+        m.content = bg;
+      });
+  }, [mounted, theme, skin]);
 
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
