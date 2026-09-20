@@ -1,5 +1,5 @@
 import { DOCS, getDoc } from "@/lib/docs";
-import { Crystal, FAINT, INK, OG_SIZE, Wordmark, ogImage } from "@/lib/og";
+import { FAINT, INK, OG_SIZE, RULE_SOFT, Wordmark, ogImage } from "@/lib/og";
 
 export const size = OG_SIZE;
 export const contentType = "image/png";
@@ -14,28 +14,17 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const title = getDoc(slug)?.title ?? "Documentation";
-  const fontSize = Math.min(136, Math.floor(1900 / title.length));
+  const doc = getDoc(slug);
+  const title = doc?.title ?? "Documentation";
   return ogImage(
-    <>
-      <div
-        style={{
-          position: "absolute",
-          top: 64,
-          left: 80,
-          display: "flex",
-          alignItems: "center",
-          gap: 20,
-        }}
-      >
-        <Crystal px={40} />
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
         <Wordmark size={40} />
         <span
           style={{
-            fontFamily: "Libertinus",
-            fontSize: 30,
+            fontFamily: "CommitMono",
+            fontSize: 18,
             color: FAINT,
-            marginLeft: 6,
           }}
         >
           handbook
@@ -43,22 +32,19 @@ export default async function Image({
       </div>
       <div
         style={{
-          position: "absolute",
-          top: 558 - Math.round(fontSize * 1.05),
-          left: 80,
-          width: 1040,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
+          marginTop: 18,
+          paddingTop: 22,
+          borderTop: `1px solid ${RULE_SOFT}`,
           display: "flex",
           fontFamily: "Libertinus",
-          fontSize,
-          lineHeight: 1.05,
-          letterSpacing: "-0.02em",
+          fontSize: title.length > 14 ? 64 : 84,
+          lineHeight: 1.1,
           color: INK,
         }}
       >
         {title}
       </div>
-    </>,
+    </div>,
+    `docs/${doc?.file ?? ""}`,
   );
 }

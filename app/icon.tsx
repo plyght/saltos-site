@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { BG, Crystal } from "@/lib/og";
+import { CrystalBitmap } from "@/lib/og";
 
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
@@ -13,11 +13,9 @@ export default function Icon() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: BG,
-        borderRadius: 12,
       }}
     >
-      <Crystal px={64} />
+      <CrystalBitmap px={64} />
     </div>,
     size,
   );

@@ -1,4 +1,4 @@
-import { Crystal, FAINT, OG_SIZE, Wordmark, ogImage } from "@/lib/og";
+import { OG_SIZE, RULE_SOFT, SOFT, Wordmark, ogImage } from "@/lib/og";
 
 export const alt = "saltOS — an independent Linux distribution";
 export const size = OG_SIZE;
@@ -6,28 +6,24 @@ export const contentType = "image/png";
 
 export default function Image() {
   return ogImage(
-    <>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <Wordmark size={132} />
       <div
         style={{
-          position: "absolute",
-          top: 64,
-          left: 80,
+          marginTop: 22,
+          paddingTop: 22,
+          borderTop: `1px solid ${RULE_SOFT}`,
           display: "flex",
-          alignItems: "center",
-          gap: 20,
+          flexDirection: "column",
           fontFamily: "Libertinus",
-          fontSize: 30,
-          color: FAINT,
+          fontSize: 32,
+          lineHeight: 1.3,
+          color: SOFT,
         }}
       >
-        <Crystal px={40} />
-        the independent handbook
+        <span>the independent handbook</span>
       </div>
-      <div
-        style={{ position: "absolute", top: 350, left: 72, display: "flex" }}
-      >
-        <Wordmark size={340} />
-      </div>
-    </>,
+    </div>,
+    "An independent Linux distribution · strata · rollback",
   );
 }
