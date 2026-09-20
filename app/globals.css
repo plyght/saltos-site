@@ -72,6 +72,7 @@ html {
   scroll-padding-top: 1rem;
   background: var(--page-bg);
   min-height: 100%;
+  overscroll-behavior-y: none;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {

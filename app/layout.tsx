@@ -12,9 +12,10 @@ export const metadata: Metadata = {
     description:
       "Independent Linux that runs software from any distribution and rolls back every change cleanly.",
     type: "website",
+    siteName: "saltOS",
   },
-  icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
