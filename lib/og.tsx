@@ -10,9 +10,6 @@ export const SHEET = "#ffffff";
 export const INK = "#202122";
 export const SOFT = "#54595d";
 export const FAINT = "#72777d";
-export const RULE = "#a2a9b1";
-export const RULE_SOFT = "#c8ccd1";
-export const TAB = "#a7d7f9";
 export const ACCENT = "#0f7c86";
 export const ACCENT_TEXT = "#0a5f67";
 
@@ -114,61 +111,29 @@ async function fonts() {
   ];
 }
 
-export async function ogImage(right: React.ReactNode, footer: string) {
+export async function ogImage(right: React.ReactNode) {
   return new ImageResponse(
     <div
       style={{
         width: "100%",
         height: "100%",
         display: "flex",
-        flexDirection: "column",
-        background: PAPER,
-        padding: "36px 40px 32px",
+        alignItems: "center",
+        background: SHEET,
+        padding: "0 80px",
       }}
     >
+      <AsciiCrystal fontSize={22} />
       <div
         style={{
           flex: 1,
           display: "flex",
-          background: SHEET,
-          border: `1px solid ${TAB}`,
-          padding: "48px 56px",
+          flexDirection: "column",
+          justifyContent: "center",
+          paddingLeft: 64,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            paddingRight: 48,
-            borderRight: `1px solid ${RULE_SOFT}`,
-          }}
-        >
-          <AsciiCrystal fontSize={18} />
-        </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingLeft: 56,
-          }}
-        >
-          {right}
-        </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: 14,
-          fontFamily: "CommitMono",
-          fontSize: 16,
-          color: FAINT,
-        }}
-      >
-        <span>{footer}</span>
-        <span>saltos.dev</span>
+        {right}
       </div>
     </div>,
     { ...OG_SIZE, fonts: await fonts() },

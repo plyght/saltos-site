@@ -1,5 +1,5 @@
 import { DOCS, getDoc } from "@/lib/docs";
-import { FAINT, INK, OG_SIZE, RULE_SOFT, Wordmark, ogImage } from "@/lib/og";
+import { FAINT, INK, OG_SIZE, Wordmark, ogImage } from "@/lib/og";
 
 export const size = OG_SIZE;
 export const contentType = "image/png";
@@ -14,30 +14,21 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const doc = getDoc(slug);
-  const title = doc?.title ?? "Documentation";
+  const title = getDoc(slug)?.title ?? "Documentation";
   return ogImage(
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
-        <Wordmark size={40} />
-        <span
-          style={{
-            fontFamily: "CommitMono",
-            fontSize: 18,
-            color: FAINT,
-          }}
-        >
+        <Wordmark size={44} />
+        <span style={{ fontFamily: "CommitMono", fontSize: 20, color: FAINT }}>
           handbook
         </span>
       </div>
       <div
         style={{
-          marginTop: 18,
-          paddingTop: 22,
-          borderTop: `1px solid ${RULE_SOFT}`,
+          marginTop: 28,
           display: "flex",
           fontFamily: "Libertinus",
-          fontSize: title.length > 14 ? 64 : 84,
+          fontSize: title.length > 14 ? 72 : 96,
           lineHeight: 1.1,
           color: INK,
         }}
@@ -45,6 +36,5 @@ export default async function Image({
         {title}
       </div>
     </div>,
-    `docs/${doc?.file ?? ""}`,
   );
 }

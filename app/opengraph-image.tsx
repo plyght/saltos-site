@@ -1,4 +1,4 @@
-import { OG_SIZE, RULE_SOFT, SOFT, Wordmark, ogImage } from "@/lib/og";
+import { OG_SIZE, SOFT, Wordmark, ogImage } from "@/lib/og";
 
 export const alt = "saltOS — an independent Linux distribution";
 export const size = OG_SIZE;
@@ -7,23 +7,19 @@ export const contentType = "image/png";
 export default function Image() {
   return ogImage(
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <Wordmark size={132} />
+      <Wordmark size={140} />
       <div
         style={{
-          marginTop: 22,
-          paddingTop: 22,
-          borderTop: `1px solid ${RULE_SOFT}`,
+          marginTop: 28,
           display: "flex",
-          flexDirection: "column",
           fontFamily: "Libertinus",
-          fontSize: 32,
-          lineHeight: 1.3,
+          fontSize: 30,
+          whiteSpace: "nowrap",
           color: SOFT,
         }}
       >
-        <span>the independent handbook</span>
+        the independent handbook
       </div>
     </div>,
-    "An independent Linux distribution · strata · rollback",
   );
 }
