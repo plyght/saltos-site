@@ -29,7 +29,10 @@ export function Tabs({
           </a>
         </li>
         <li className={view === "history" ? "selected" : undefined}>
-          <Link href="/history">View history</Link>
+          <Link href="/history">
+            <span className="tab-long">View history</span>
+            <span className="tab-short">History</span>
+          </Link>
         </li>
       </ul>
     </div>
